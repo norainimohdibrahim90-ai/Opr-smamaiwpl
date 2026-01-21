@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ms">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sistem OPR Digital - SMA MAIWP Labuan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+            },
+            colors: {
+              brand: {
+                red: '#991b1b', // Red-800: Professional deep red
+                darkRed: '#7f1d1d', // Red-900
+                softYellow: '#fffbeb', // Amber-50: Very soft yellow background
+                gold: '#f59e0b', // Amber-500: Accent
+                cream: '#fef3c7', // Amber-100: Secondary backgrounds
+              }
+            }
+          },
+        },
+      }
+    </script>
+    <style>
+      /* Print specific styles to ensure OPR looks good on paper */
+      @media print {
+        body * {
+          visibility: hidden;
+        }
+        #printable-opr, #printable-opr * {
+          visibility: visible;
+        }
+        #printable-opr {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+        }
+        @page {
+          size: A4;
+          margin: 0;
+        }
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "recharts": "https://esm.sh/recharts@^3.6.0",
+    "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "react": "https://esm.sh/react@^19.2.3",
+    "@google/genai": "https://esm.sh/@google/genai@^1.37.0",
+    "jspdf": "https://esm.sh/jspdf@^4.0.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "html2canvas": "https://esm.sh/html2canvas@^1.4.1"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body class="bg-brand-softYellow text-slate-900">
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
