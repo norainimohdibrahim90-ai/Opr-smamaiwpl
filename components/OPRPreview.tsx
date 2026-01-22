@@ -93,14 +93,13 @@ const OPRPreview = forwardRef<HTMLDivElement, Props>(({ data }, ref) => {
 
                 <div className="grid grid-cols-2 gap-4">
                      <div className="flex flex-col">
-                        <span className="font-bold border-b border-gray-300 mb-1 text-black text-[10pt]">5. PENAMBAHBAIKAN (AI)</span>
-                        {/* Changed bg-blue-50 to bg-yellow-50 for consistency */}
+                        <span className="font-bold border-b border-gray-300 mb-1 text-black text-[10pt]">5. PENAMBAHBAIKAN</span>
                         <div className="text-justify whitespace-pre-line text-[10pt] leading-snug pl-2 bg-yellow-50 p-1.5 rounded">
                             {data.penambahbaikan || "-"}
                         </div>
                     </div>
                      <div className="flex flex-col">
-                        <span className="font-bold border-b border-gray-300 mb-1 text-black text-[10pt]">6. REFLEKSI (AI)</span>
+                        <span className="font-bold border-b border-gray-300 mb-1 text-black text-[10pt]">6. REFLEKSI</span>
                         <div className="text-justify whitespace-pre-line text-[10pt] leading-snug pl-2 bg-yellow-50 p-1.5 rounded">
                             {data.refleksi || "-"}
                         </div>
@@ -112,7 +111,7 @@ const OPRPreview = forwardRef<HTMLDivElement, Props>(({ data }, ref) => {
             <div className="mb-2">
                 <span className="font-bold block border-b border-gray-300 mb-1 text-[10pt]">GAMBAR SEKITAR AKTIVITI</span>
                 {data.gambar.length > 0 ? (
-                    <div className="grid grid-cols-2 gap-2 h-[65mm] overflow-hidden">
+                    <div className="grid grid-cols-2 gap-2 h-[90mm] overflow-hidden">
                          {data.gambar.slice(0, 4).map((img, idx) => (
                              <div key={idx} className="bg-gray-200 border border-gray-300 flex items-center justify-center overflow-hidden h-full">
                                  <img src={img} alt={`Gambar ${idx + 1}`} className="w-full h-full object-cover" />
@@ -120,7 +119,7 @@ const OPRPreview = forwardRef<HTMLDivElement, Props>(({ data }, ref) => {
                          ))}
                     </div>
                 ) : (
-                    <div className="text-gray-400 italic text-center p-4 border border-dashed h-[65mm]">Tiada gambar dilampirkan</div>
+                    <div className="text-gray-400 italic text-center p-4 border border-dashed h-[90mm]">Tiada gambar dilampirkan</div>
                 )}
             </div>
 

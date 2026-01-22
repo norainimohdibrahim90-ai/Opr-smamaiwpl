@@ -1,7 +1,6 @@
 import React, { useState, ChangeEvent, useCallback } from 'react';
 import { UnitType, OPRData } from '../types';
-import { generateOPRContent } from '../services/geminiService';
-import { Loader2, Wand2, Upload, X, Save, FileText, ArrowRight, Calendar } from 'lucide-react';
+import { Upload, X, Save, Send, FileText, ArrowRight, Calendar } from 'lucide-react';
 
 interface Props {
   initialData: OPRData;
@@ -63,7 +62,6 @@ ImageSection.displayName = 'ImageSection';
 // ============================================================================
 const OPRForm: React.FC<Props> = ({ initialData, onPreview, onSave, isSaving }) => {
   const [formData, setFormData] = useState<OPRData>(initialData);
-  const [isGenerating, setIsGenerating] = useState(false);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -85,26 +83,6 @@ const OPRForm: React.FC<Props> = ({ initialData, onPreview, onSave, isSaving }) 
       gambar: prev.gambar.filter((_, i) => i !== index)
     }));
   }, []);
-
-  const handleGenerateAI = async () => {
-    if (!formData.aktiviti || !formData.kelemahan || !formData.objektif) {
-      alert("Sila isi Bahagian Objektif, Aktiviti, dan Kelemahan dahulu untuk bantuan AI.");
-      return;
-    }
-    setIsGenerating(true);
-    try {
-      const result = await generateOPRContent(formData.aktiviti, formData.objektif, formData.kekuatan, formData.kelemahan);
-      setFormData(prev => ({
-        ...prev,
-        penambahbaikan: result.penambahbaikan,
-        refleksi: result.refleksi
-      }));
-    } catch (e) {
-      alert("Ralat semasa menjana AI. Sila cuba lagi.");
-    } finally {
-      setIsGenerating(false);
-    }
-  };
 
   const handlePreviewClick = () => {
     const missingFields: string[] = [];
@@ -244,43 +222,30 @@ const OPRForm: React.FC<Props> = ({ initialData, onPreview, onSave, isSaving }) 
             </div>
         </div>
 
-        {/* Section 3: AI Generation */}
-        <div className="md:col-span-2 bg-brand-cream p-4 rounded-xl border border-yellow-200 shadow-sm">
-             <div className="flex justify-between items-center mb-3">
-                <h3 className="text-lg font-semibold text-brand-red flex items-center gap-2">
-                    <Wand2 className="w-5 h-5 text-brand-gold" /> AI Assistant (Gemini)
-                </h3>
-                <button 
-                    onClick={handleGenerateAI}
-                    disabled={isGenerating}
-                    className="flex items-center gap-2 px-4 py-2 bg-brand-red text-white rounded-md hover:bg-brand-darkRed transition disabled:opacity-50 text-sm font-medium shadow-sm"
-                >
-                    {isGenerating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Wand2 className="w-4 h-4" />}
-                    {isGenerating ? 'Sedang Menjana...' : 'Auto-Jana Penambahbaikan & Refleksi'}
-                </button>
-             </div>
-             <p className="text-xs text-gray-600 mb-4">AI akan menganalisis Objektif, Aktiviti dan Kelemahan untuk menjana cadangan yang profesional.</p>
+        {/* Section 3: Penambahbaikan & Refleksi */}
+        <div className="space-y-4 md:col-span-2">
+            <h3 className="text-lg font-semibold text-brand-red border-b pb-1">3. Penambahbaikan & Refleksi</h3>
 
-             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                    <label className="block text-sm font-medium text-red-900">Penambahbaikan (Auto/Manual)</label>
-                    <textarea name="penambahbaikan" rows={3} value={formData.penambahbaikan} onChange={handleChange} className="mt-1 block w-full rounded-md border-yellow-400 bg-yellow-50 border p-2 shadow-sm focus:border-red-500 focus:ring-red-500"></textarea>
+                    <label className="block text-sm font-medium text-gray-700">Penambahbaikan</label>
+                    <textarea name="penambahbaikan" rows={3} value={formData.penambahbaikan} onChange={handleChange} className={inputClass} placeholder="Cadangan penambahbaikan untuk aktiviti seterusnya..."></textarea>
                 </div>
                 <div>
-                    <label className="block text-sm font-medium text-red-900">Refleksi (Auto/Manual)</label>
-                    <textarea name="refleksi" rows={3} value={formData.refleksi} onChange={handleChange} className="mt-1 block w-full rounded-md border-yellow-400 bg-yellow-50 border p-2 shadow-sm focus:border-red-500 focus:ring-red-500"></textarea>
+                    <label className="block text-sm font-medium text-gray-700">Refleksi</label>
+                    <textarea name="refleksi" rows={3} value={formData.refleksi} onChange={handleChange} className={inputClass} placeholder="Rumusan dan refleksi terhadap pelaksanaan program..."></textarea>
                 </div>
             </div>
         </div>
 
          {/* Optimized Image Section */}
-         <ImageSection 
-            images={formData.gambar} 
-            onUpload={handleImageUpload} 
-            onRemove={removeImage} 
+         <ImageSection
+            images={formData.gambar}
+            onUpload={handleImageUpload}
+            onRemove={removeImage}
          />
 
-        {/* Section 5: Provider Info */}
+        {/* Section 4: Provider Info */}
         <div className="space-y-4 md:col-span-2 border-t pt-4">
              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
@@ -297,18 +262,28 @@ const OPRForm: React.FC<Props> = ({ initialData, onPreview, onSave, isSaving }) 
 
       {/* Action Buttons */}
       <div className="flex justify-end gap-3 mt-8 border-t pt-6 sticky bottom-0 bg-white py-4 z-10 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
-          <button 
+          <button
             onClick={() => onSave(formData)}
             disabled={isSaving}
             className="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 font-medium transition text-sm flex items-center gap-2"
           >
              <Save className="w-4 h-4" /> Simpan Draft
           </button>
-          <button 
+          <button
             onClick={handlePreviewClick}
             className="flex items-center gap-2 px-6 py-2 bg-brand-red text-white rounded-md hover:bg-brand-darkRed font-bold transition shadow-lg transform hover:-translate-y-1"
           >
              Generate OPR <ArrowRight className="w-4 h-4" />
+          </button>
+          <button
+            onClick={() => {
+              const submittedData = { ...formData, status: 'Submitted' as const };
+              onSave(submittedData);
+            }}
+            disabled={isSaving}
+            className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 font-medium transition text-sm flex items-center gap-2"
+          >
+             <Send className="w-4 h-4" /> Hantar
           </button>
       </div>
     </div>

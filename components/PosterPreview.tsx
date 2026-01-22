@@ -93,10 +93,10 @@ const PosterPreview = forwardRef<HTMLDivElement, Props>(({ data }, ref) => {
             <div className="flex gap-4 mb-2">
                 <div className="w-2/3">
                     <div className="bg-white p-1 rounded-xl shadow-xl transform hover:scale-[1.01] transition duration-500">
-                        <div className="rounded-lg overflow-hidden aspect-video relative h-[45mm] w-full group">
-                             <img 
-                                src={mainImage} 
-                                alt="Main Event" 
+                        <div className="rounded-lg overflow-hidden aspect-video relative h-[60mm] w-full group">
+                             <img
+                                src={mainImage}
+                                alt="Main Event"
                                 className="w-full h-full object-cover transition duration-700 group-hover:scale-105" 
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-60"></div>
@@ -208,15 +208,15 @@ const PosterPreview = forwardRef<HTMLDivElement, Props>(({ data }, ref) => {
                 </div>
             </div>
 
-            {/* Gallery Strip - Compact */}
+            {/* Gallery Strip - Expanded */}
             {subImages.length > 0 && (
-                <div className="mt-3 h-[30mm] shrink-0">
+                <div className="mt-3 h-[45mm] shrink-0">
                      <div className="flex items-center gap-2 mb-1.5">
                          <div className="h-[1px] bg-gray-300 flex-1"></div>
                          <span className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">Galeri Lensa</span>
                          <div className="h-[1px] bg-gray-300 flex-1"></div>
                      </div>
-                     <div className="flex gap-2 h-[23mm]">
+                     <div className="flex gap-2 h-[38mm]">
                         {subImages.map((img, i) => (
                             <div key={i} className="flex-1 rounded-md overflow-hidden border border-white shadow-sm relative group">
                                  <img src={img} alt="Gallery" className="w-full h-full object-cover transition group-hover:scale-110" />
